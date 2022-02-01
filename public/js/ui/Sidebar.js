@@ -1,3 +1,6 @@
+
+const body = document.getElementsByTagName("body");
+
 /**
  * Класс Sidebar отвечает за работу боковой колонки:
  * кнопки скрытия/показа колонки в мобильной версии сайта
@@ -18,7 +21,11 @@ class Sidebar {
    * при нажатии на кнопку .sidebar-toggle
    * */
   static initToggleButton() {
-
+    const sidebarToggle = document.querySelector(".sidebar-toggle");
+    sidebarToggle.addEventListener("click", () => {
+      body[0].classList.toggle("sidebar-open");
+      body[0].classList.toggle("sidebar-collapse");
+    })
   }
 
   /**
@@ -30,5 +37,24 @@ class Sidebar {
    * */
   static initAuthLinks() {
 
+    const registerButton = document.getElementsByClassName("menu-item_register");
+    registerButton[0].addEventListener("click", (e) => {
+      e.preventDefault();
+      App.getModal('register').open();
+    });
+    const loginButton = document.getElementsByClassName("menu-item_login");
+    loginButton[0].addEventListener("click", (e) => {
+      e.preventDefault();
+      App.getModal('login').open();
+    });
+    const logOutButton = document.getElementsByClassName("menu-item_logout");
+    logOutButton[0].addEventListener("click", () => {
+
+      User.logout(User.current(), (err, response) => {
+        if (response && response.success) {
+          App.setState('init');
+        }
+      });
+    });
   }
 }
